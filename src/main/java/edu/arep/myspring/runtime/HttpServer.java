@@ -2,6 +2,7 @@ package edu.arep.myspring.runtime;
 
 import edu.arep.myspring.example.Test;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +11,7 @@ public class HttpServer {
 
     public static Map<String, Method> componentes = new HashMap<String, Method>();
 
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, IllegalAccessException {
 
         //1. Cargar los componentes anotados con @Component
         //Para el primer prototipo lo leeré de la linea de comados
@@ -38,10 +39,10 @@ public class HttpServer {
 
         // Simulador: Lo que hace el web server
         String pathDelGet = "/components/hello";
-        Method m = componentes.get(pathDelGet.substring(10));
+        Method m = componentes.get(pathDelGet.substring(11));
 
         if (m != null){
-            //Ejecutar m
+            System.out.println("Salida: " + m.invoke(null));
         }
     }
 }

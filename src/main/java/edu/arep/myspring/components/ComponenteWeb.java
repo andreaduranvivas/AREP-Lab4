@@ -6,8 +6,9 @@ import edu.arep.myspring.runtime.GetMapping;
 @Component
 public class ComponenteWeb {
 
-    @GetMapping("/")
-    public String index() {
+    @GetMapping("/hello")
+    public static String hello() {
+
         return "Greetings from Spring Boot!";
     }
 

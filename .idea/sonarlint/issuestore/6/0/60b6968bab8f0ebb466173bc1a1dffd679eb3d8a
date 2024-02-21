@@ -1,0 +1,11 @@
+
+q
+java:S3008"TRename this field "_instance" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ğÛ®8äœôáÜ1
+»
+java:S6548"˜A Singleton implementation was detected. Make sure the use of the Singleton pattern is required and the implementation is the right one for the context.(¸áÜÃüÿÿÿÿ8çœôáÜ1
+t
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(¦…Şûÿÿÿÿ8ºÖóáÜ1
+R
+java:S1611!"5Remove the parentheses around the "request" parameter(Ò†Ïš8½ÖóáÜ1
+O
+java:S1611*"2Remove the parentheses around the "body" parameter(ëÚÑ”8¾ÖóáÜ1

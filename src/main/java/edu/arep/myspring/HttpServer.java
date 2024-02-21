@@ -1,6 +1,8 @@
-package edu.arep.myspring.runtime;
+package edu.arep.myspring;
 
 import edu.arep.myspring.example.Test;
+import edu.arep.myspring.runtime.Component;
+import edu.arep.myspring.runtime.GetMapping;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -21,7 +23,7 @@ public class HttpServer {
 
         if (c.isAnnotationPresent(Component.class)){
 
-            //2. Almacenar todos los métodos en una estrucura <K,V<
+            //2. Almacenar todos los métodos en una estrucura <K,V>
             // La llave será el path del webservice y el valor son métodos
             // OJO: Todos los métodos deben ser estáticos
 

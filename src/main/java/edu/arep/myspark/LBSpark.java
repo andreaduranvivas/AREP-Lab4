@@ -40,9 +40,9 @@ public class LBSpark {
      * @throws IOException when an I/O exception occurs
      * @throws URISyntaxException when there is an invalid syntax
      */
-    public static void runServer(String[] args) throws IOException, URISyntaxException, IllegalAccessException, InvocationTargetException {
-
+    public static void runServer(String[] args) throws IOException, URISyntaxException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
         ServerSocket serverSocket = startServer(35000);
+        ComponentLoader.loadComponents();
         running = true;
 
         while (running) {

@@ -1,6 +1,7 @@
 package edu.arep.myspring.components;
 
 import edu.arep.api.MovieApiClient;
+import edu.arep.myspark.LBSpark;
 import edu.arep.myspark.peticiones.Request;
 import edu.arep.myspring.runtime.Component;
 import edu.arep.myspring.runtime.GetMapping;

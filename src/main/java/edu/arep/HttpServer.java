@@ -1,11 +1,11 @@
-package edu.arep.myspark;
+package edu.arep;
 
 import edu.arep.myspark.handle.Function;
 import edu.arep.myspark.nuevasFunciones.StaticFiles;
 import edu.arep.myspark.peticiones.MiniSpark;
 import edu.arep.myspark.peticiones.Request;
 import edu.arep.myspring.components.ComponentLoader;
-import edu.arep.webClient.FileIIdentifier;
+import edu.arep.webClient.FileIdentifier;
 import edu.arep.webClient.RestResponse;
 
 import java.io.*;
@@ -15,21 +15,22 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-public class LBSpark {
+public class HttpServer {
 
     private static boolean running = false;
     private static StaticFiles staticFiles = new StaticFiles();
-    private static LBSpark _instance = new LBSpark();
+    private static HttpServer _instance = new HttpServer();
 
-    public LBSpark() {}
+    public HttpServer() {}
 
-    public static LBSpark getInstance() {
+    public static HttpServer getInstance() {
         return _instance;
+    }
+
+    public static void main(String[] args) throws IOException, URISyntaxException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
+        ComponentLoader.loadComponents();
+        runServer(args);
     }
 
 
@@ -40,9 +41,8 @@ public class LBSpark {
      * @throws IOException when an I/O exception occurs
      * @throws URISyntaxException when there is an invalid syntax
      */
-    public static void runServer(String[] args) throws IOException, URISyntaxException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+    public static void runServer(String[] args) throws IOException, URISyntaxException, IllegalAccessException, InvocationTargetException {
         ServerSocket serverSocket = startServer(35000);
-        ComponentLoader.loadComponents();
         running = true;
 
         while (running) {
@@ -132,7 +132,7 @@ public class LBSpark {
             String response = service.handle(req);
             RestResponse.sendResponse(clientSocket, response);
         } else {
-            FileIIdentifier.sendResponse(resourcePath, clientSocket);
+            FileIdentifier.sendResponse(resourcePath, clientSocket);
         }
     }
 
@@ -158,10 +158,12 @@ public class LBSpark {
 
         if(service != null){
             Request req = new Request(rawRequest);
+            System.out.println(req.getQuery());
+
             String response = ComponentLoader.execute(service, req);
             RestResponse.sendResponse(clientSocket, response);
         } else {
-            FileIIdentifier.sendResponse(resourcePath, clientSocket);
+            FileIdentifier.sendResponse(resourcePath, clientSocket);
         }
 
 

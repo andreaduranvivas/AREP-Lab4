@@ -1,5 +1,8 @@
 package edu.arep.api;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 public class MovieApiClient {
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String API_KEY = "b7232f2";
-    private static final String BASE_URL = "https://www.omdbapi.com/?apikey=" + API_KEY + "&t=";
+    private static final String BASE_URL = "http://www.omdbapi.com/?apikey=" + API_KEY + "&t=";
     private static final CacheMovie cache = CacheMovie.getInstance();
 
 
@@ -45,7 +48,7 @@ public class MovieApiClient {
 
         StringBuffer response = new StringBuffer();
         int responseCode = connection.getResponseCode();
-        System.out.println("GET Response Code: " + responseCode);
+        System.out.println("GET Response Code:: " + responseCode);
 
         if (responseCode == HttpURLConnection.HTTP_OK) { // success
             response = buildResponse(connection);
@@ -57,5 +60,31 @@ public class MovieApiClient {
         System.out.println("GET DONE");
         cache.save(movieTitle, response.toString());
         return response.toString();
+    }
+
+    public static JsonObject fetchMovieData2(String movieTitle) throws Exception {
+        if (cache.isCached(movieTitle)) {
+            System.out.println("Estaba en Cache");
+            String cachedMovieInfo = cache.getMovie(movieTitle);
+            return new Gson().fromJson(cachedMovieInfo, JsonObject.class);
+        }
+
+        HttpURLConnection connection = makeGetRequest(movieTitle);
+
+        StringBuffer response = new StringBuffer();
+        int responseCode = connection.getResponseCode();
+        System.out.println("GET Response Code:: " + responseCode);
+
+        if (responseCode == HttpURLConnection.HTTP_OK) { // success
+            response = buildResponse(connection);
+            System.out.println(response);
+        } else {
+            System.out.println("GET request not worked");
+        }
+
+        System.out.println("GET DONE");
+        String responseString = response.toString();
+        cache.save(movieTitle, responseString);
+        return new Gson().fromJson(responseString, JsonObject.class);
     }
 }

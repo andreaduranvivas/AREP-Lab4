@@ -5,76 +5,45 @@
  * @param None
  * @return None
  */
-function loadMovieInfo() {
+function loadMovieInfo(movieData){
 
-    const urlParams = new URLSearchParams(window.location.search);
-    let movieTitle = urlParams.get('title');
+    let movieTitleElement = document.getElementById('movieTitleDisplay');
+    let movieInfoElement = document.getElementById('movieInfo');
+    let moviePosterElement = document.getElementById('moviePoster');
 
-    if (!movieTitle) {
-            movieTitle = document.getElementById("movieTitle").value;
+    if (movieData.Response !== "False") {
+        moviePosterElement.src = movieData.Poster;
+        movieInfoElement.innerHTML = `
+            <h3>${movieData.Title}</h3>
+            <div class="plot">${movieData.Plot}</div>
+            <div class="row">
+                <div class="col-md-6">
+                    ${generateInfoColumns(movieData, 0)}
+                </div>
+                <div class="col-md-6">
+                    ${generateInfoColumns(movieData, 1)}
+                </div>
+            </div>
+            <div id="genres" class="genres">${formatGenres(movieData.Genre)}</div>
+        `;
+    } else {
+        moviePosterElement.src = 'img/notFound.png';
+        movieInfoElement.innerHTML = `
+            <h3>${movieData.Title}</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    ${generateInfoColumns(movieData, 0)}
+                </div>
+                <div class="col-md-6">
+                    ${generateInfoColumns(movieData, 1)}
+                </div>
+            </div>
+        `;
     }
-    const url = new URL(window.location.href);
-    url.searchParams.set('title', encodeURIComponent(movieTitle));
-    window.history.pushState({ path: url.href }, '', url.href);
-
     document.getElementById("movieContainer").style.display = 'flex';
-
-    const apiKey = "b7232f2";
-    const baseUrl = "https://www.omdbapi.com/?apikey=" + apiKey + "&t=";
-    const fullUrl = baseUrl + encodeURIComponent(movieTitle);
-
-    const xhttp = new XMLHttpRequest();
-
-    /**
-     * Event handler for when the XMLHttpRequest object loads.
-     * Parses the response data and updates the movie title, poster, and info elements
-     * on the webpage based on the movie data received.
-     */
-    xhttp.onload = function() {
-        if (this.status === 200 && this.responseText) {
-            const movieData = JSON.parse(this.responseText);
-            let movieTitleElement = document.getElementById('movieTitle');
-            let movieInfoElement = document.getElementById('movieInfo');
-            let moviePosterElement = document.getElementById('moviePoster');
-
-            if (movieData.Response !== "False") {
-                movieTitleElement.textContent = movieData.Title;
-                moviePosterElement.src = movieData.Poster;
-                movieInfoElement.innerHTML = `
-                            <h3>${movieData.Title}</h3>
-                            <div class="plot">${movieData.Plot}</div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    ${generateInfoColumns(movieData, 0)}
-                                </div>
-                                <div class="col-md-6">
-                                    ${generateInfoColumns(movieData, 1)}
-                                </div>
-                            </div>
-                            <div id="genres" class="genres">${formatGenres(movieData.Genre)}</div>
-                        `;
-            } else {
-                moviePosterElement.src = 'img/notFound.png';
-                movieInfoElement.innerHTML = `
-                             <h3>${movieData.Title}</h3>
-                             <div class="row">
-                                 <div class="col-md-6">
-                                     ${generateInfoColumns(movieData, 0)}
-                                 </div>
-                                 <div class="col-md-6">
-                                     ${generateInfoColumns(movieData, 1)}
-                                 </div>
-                             </div>
-                        `;
-            }
-        } else {
-            alert('Error al encontrar la película');
-        }
-    };
-
-    xhttp.open("GET", fullUrl);
-    xhttp.send();
 }
+
+
 
 /**
  * Generates HTML columns with movie information.
@@ -120,8 +89,12 @@ function formatGenres(genres) {
 
 document.getElementById('movieForm').addEventListener('submit', function(event) {
     event.preventDefault();
-    loadMovieInfo();
+    const movieTitle = document.getElementById("movieTitle").value;
+    getWithFetch(movieTitle)
+        .then(movieData => loadMovieInfo(movieData))
+        .catch(error => console.error(error));
 });
+
 
 
 /**
@@ -133,7 +106,7 @@ document.getElementById('movieForm').addEventListener('submit', function(event) 
 function handleEnterPress(event) {
     if (event.key === 'Enter') {
         event.preventDefault();
-        loadMovieInfo();
+        getWithFetch();
     }
 }
 
@@ -142,3 +115,21 @@ document.getElementById("movieTitle").addEventListener('keypress', handleEnterPr
 module.exports = {
   loadMovieInfo
 };
+
+function getWithFetch() {
+    const movieTitle = document.getElementById("movieTitle").value;
+    const apiKey = "b7232f2";
+    const baseUrl = "https://www.omdbapi.com/?apikey=" + apiKey + "&t=";
+    const fullUrl = baseUrl + encodeURIComponent(movieTitle);
+    //const url = "http://localhost:35000/movie?title=" + encodeURIComponent(movieTitle);
+
+    fetch(fullUrl)
+        .then(response => response.json())
+        .then(movieData => {
+            loadMovieInfo(movieData);
+        })
+        .catch(error => {
+            alert('Error al encontrar la película');
+            console.error(error);
+        });
+}

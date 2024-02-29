@@ -1,9 +1,0 @@
-
-?
-java:S1659	"$Declare "failed" on a separate line.(²­ùİøÿÿÿÿ
-@
-java:S1181"%Catch Exception instead of Throwable.(À˜§üÿÿÿÿ
-@	java:S106"+Replace this use of System.out by a logger.(ÃĞ³¶
-@	java:S106"+Replace this use of System.out by a logger.(„ßÊÜ
-q
-java:S1128"TRemove this unnecessary import: same package classes are always implicitly imported.(Á¸œ·8‚•³…ß1

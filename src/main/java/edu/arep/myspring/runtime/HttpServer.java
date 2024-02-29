@@ -40,8 +40,8 @@ public class HttpServer {
 
 
         // Simulador: Lo que hace el web server
-        String pathDelGet = "/components/hello";
-        String queryValue = "Andrea";
+        String pathDelGet = "/components/movie";
+        String queryValue = "it";
 
         Method m = componentes.get(pathDelGet.substring(11));
 

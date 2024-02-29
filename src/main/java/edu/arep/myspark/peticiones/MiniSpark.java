@@ -1,6 +1,6 @@
 package edu.arep.myspark.peticiones;
 
-import edu.arep.HttpServer;
+import edu.arep.LBSpark;
 import edu.arep.myspark.handle.Function;
 
 import java.io.IOException;
@@ -52,7 +52,7 @@ public class MiniSpark {
     }
 
     /**
-     * It starts the application by running the HttpServer server.
+     * It starts the application by running the LBSpark server.
      *
      * @throws IOException              If an I/O error occurs.
      * @throws URISyntaxException        If a string could not be parsed as a URI reference.
@@ -62,7 +62,7 @@ public class MiniSpark {
      */
 
     public static void start() throws IOException, URISyntaxException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
-        HttpServer.runServer(new String[]{});
+        LBSpark.runServer(new String[]{});
     }
 
 

@@ -16,15 +16,14 @@ import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class HttpServer {
+public class LBSpark {
 
     private static boolean running = false;
-    private static StaticFiles staticFiles = new StaticFiles();
-    private static HttpServer _instance = new HttpServer();
+    private static LBSpark _instance = new LBSpark();
 
-    public HttpServer() {}
+    public LBSpark() {}
 
-    public static HttpServer getInstance() {
+    public static LBSpark getInstance() {
         return _instance;
     }
 
@@ -158,7 +157,7 @@ public class HttpServer {
 
         if(service != null){
             Request req = new Request(rawRequest);
-            System.out.println(req.getQuery());
+            //System.out.println(req.getQuery());
 
             String response = ComponentLoader.execute(service, req);
             RestResponse.sendResponse(clientSocket, response);

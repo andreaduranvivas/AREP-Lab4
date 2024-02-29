@@ -126,7 +126,7 @@ function getWithFetch() {
     fetch(fullUrl)
         .then(response => response.json())
         .then(movieData => {
-            loadMovieInfo(movieData);
+            loadMovieInfo();
         })
         .catch(error => {
             alert('Error al encontrar la película');
